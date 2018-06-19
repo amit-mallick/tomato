@@ -1,0 +1,14 @@
+<%#= @filter.size %>
+<% if @filter.size < 1 %>
+  <h4>Nothing here</h4>
+<% end %>
+
+<% for r in @filter %>
+
+  <p><%= r.name %></p>
+  <p><%= image_tag r.image.thumb.url %></p>
+  <p><%= r.cuisines %></p>
+  <p><%= simple_format(r.description) %></p>
+  <p>--------------------------------------</p>
+
+<% end %>

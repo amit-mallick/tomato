@@ -1,0 +1,65 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  .checked {
+    color: orange;
+  }
+</style>
+
+<h3>Resturants added by: by: <%= current_user.name %></h3>
+
+<% for resturant in @resturants %>
+  <h2>
+    <%= link_to h(resturant.name), resturant %>
+    <span class="comments">(<%= pluralize(resturant.ratings.size, 'Rating') %>)</span>
+  </h2>
+
+  <div class="content"><%= image_tag resturant.image.thumb.url %></div>
+  <div class="type"><h5 style="color: coral"> Cuisines: <%= resturant.cuisines %> </h5></div>
+  <div class="price"><h5 style="color: magenta"> Cost For Two: ₹<%= resturant.price %> </h5></div>
+  <div class="rating">
+    <p style="color: orangered">Average
+      <% if resturant.average_rating.to_i != 0 %>
+        (<%= "%0.1f" % resturant.average_rating %>/5.0) :
+        <% resturant.average_rating.to_i.times do %>
+          <span class="fa fa-star checked"></span>
+        <% end %>
+      <% else %>
+        (0/5) : No Ratings
+      <% end %>
+    </p>
+  </div>
+  <div class="content"><%= simple_format(resturant.description) %></div>
+
+  <p>-------------------------------------------</p>
+
+<% end %>
+<br>
+<br>
+
+<h3>Ratings given by: <%= current_user.name %></h3>
+
+<% @ratings.each do |rating| %>
+
+  <p>
+    <% @id = rating.resturant_id %>
+    <% @rests = Resturant.where(id: @id) %>
+
+    <% @rests.each do |r| %>
+    <p>Resturant name: <%= r.name %></p>
+    <%= image_tag r.image.thumb %>
+  <% end %>
+  </p>
+
+  <p>
+    <b>Rating:</b>
+    <% rating.rating.times do %>
+      <span class="fa fa-star checked"></span>
+    <% end %>
+  </p>
+
+  <p>
+    <b>Review:</b>
+    <%= rating.body %>
+  </p>
+  <p>======================================================</p>
+<% end %>

@@ -1,0 +1,169 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+  .checked {
+    color: orange;
+  }
+
+  body {
+    font-family: Arial;
+    color: black;
+  }
+
+  .split {
+    height: 100%;
+    width: 80%;
+    position: fixed;
+    z-index: 1;
+    top: 45px;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+
+  .split1 {
+    height: 100%;
+    width: 20%;
+    position: fixed;
+    z-index: 1;
+    top: 85px;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+
+  .left {
+    left: 0;
+    background-color: #ffffff;
+  }
+
+  .right {
+    right: 0;
+    background-color: #ffffff;
+  }
+
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .centered img {
+    width: 150px;
+    border-radius: 50%;
+  }
+
+  .container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .container img {
+    width: 100%;
+    height: auto;
+  }
+
+  .container .btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #f1f1f1;
+    color: black;
+    font-size: 16px;
+    padding: 16px 30px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .container .btn:hover {
+    background-color: black;
+    color: white;
+  }
+</style>
+
+<% if current_user %>
+  <button><%= link_to 'New Resturant', new_resturant_path, {:style => 'color:#FFFFFF;', :class => "css_class"} %></button>
+<% end %>
+<div class="split1 left">
+  <h1>Filters</h1>
+  <p>
+  <p>Filter by cuisines:</p>
+
+  <%= form_tag(filter_cuisines_path, :method => :get) do %>
+    <div class="field">
+      <!--      <%#= f.label :cuisines %><br />-->
+      <%= select_tag :cuisines, options_for_select([["Select One", ""], "Non-Veg.", "Veg", "Both"]) %>
+      <%= submit_tag "Search" %>
+    </div>
+  <% end %>
+
+  <br>
+  <br>
+  <p>Filter by Location:</p>
+
+  <%= form_tag(filter_location_path, :method => :get) do %>
+    <div class="field">
+      <!--      <%#= f.label :cuisines %><br />-->
+      <%= text_field_tag :location, params[:location], placeholder: "Search by: Location" %>
+      <%= submit_tag "Search" %>
+    </div>
+  <% end %>
+  </p>
+</div>
+
+<div class="split right">
+  <!--<div>-->
+  <h1>Listing resturants</h1>
+  <%# i = 0 %>
+  <% for resturant in @resturants %>
+    <%# i = i + 1 %>
+    <h2>
+      <%= link_to h(resturant.name), resturant %>
+      <span class="comments">(<%= pluralize(resturant.ratings.size, 'Rating') %>)</span>
+    </h2>
+
+
+    <% if resturant.created_at < 1.day.ago %>
+      <%= "Old Post" %>
+    <% else %>
+      <%= "Added Today" %>
+    <% end %>
+
+
+    <div class="content"><%= image_tag resturant.image.thumb.url %></div>
+    <div class="type"><h5 style="color: coral"> Cuisines: <%= resturant.cuisines %> </h5></div>
+    <div class="price"><h5 style="color: magenta"> Cost For Two: ₹<%= resturant.price %> </h5></div>
+    <div class="rating">
+
+      <p style="color: orangered">Average
+        <% if resturant.average_rating.to_i != 0 %>
+          (<%= "%0.1f" % resturant.average_rating %>/5) :
+          <% resturant.average_rating.to_i.times do %>
+            <span class="fa fa-star checked"></span>
+          <% end %>
+        <% else %>
+          (0/5) : No Ratings
+        <% end %>
+      </p>
+    </div>
+    <div class="content"><%= simple_format(resturant.description) %></div>
+    <div style="width: 30%">
+      <h1>Located at:</h1>
+      <% resturant.locations.each do |l| %>
+        <p style="background: yellow">Address: <%= l.address %></p>
+        <p style="background: yellow">Location: <%= l.location %></p>
+      <% end %>
+    </div>
+
+    <%= link_to 'Show', resturant %>
+    <%= link_to 'Edit', edit_resturant_path(resturant) %>
+    <%= link_to 'Destroy', resturant, method: :delete, data: {confirm: 'Are you sure?'} %>
+    <p>------------------------------------------------------------------------------------</p>
+  <% end %>
+
+</div>

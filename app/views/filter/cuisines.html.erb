@@ -1,0 +1,23 @@
+<%#= @resturants.size %>
+
+<% for resturant in @resturants %>
+  <div class="card" style="width: 500px;">
+
+    <div class="card-divider">
+      <h4><%= resturant.name %></h4>
+    </div>
+
+    <%= image_tag resturant.image.url %>
+
+    <div class="card-section">
+      <p><%= resturant.description %>
+      <p>
+        <%= link_to 'Show', resturant %>
+        <%= link_to 'Edit', edit_resturant_path(resturant) %>
+        <%= link_to 'Destroy', resturant, method: :delete, data: {confirm: 'Are you sure?'} %>
+      </p>
+      ==============================================
+      </p>
+    </div>
+  </div>
+<% end %>
