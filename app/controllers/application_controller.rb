@@ -26,6 +26,22 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def find_resturant(id)
+    @resturant = Resturant.find(id)
+  end
+
+  def check_current_user
+    unless current_user
+      render text: "Please Login"
+    end
+  end
+
+  def is_user_owner(user_id)
+    unless current_user.id == user_id
+      render text: "You aren't the owner of this thing!!"
+    end
+  end
+
   protected
 
   def authorize

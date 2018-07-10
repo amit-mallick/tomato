@@ -4,13 +4,7 @@ Tomato::Application.routes.draw do
 
   resources :password_resets, :except => [:destroy, :index, :show ]
 
-  get "user_verifications/show"
-
   get "user_sessions/new"
-
-  get "user_sessions/create"
-
-  get "user_sessions/destroy"
 
   resources :users, only: [:new, :create]
 

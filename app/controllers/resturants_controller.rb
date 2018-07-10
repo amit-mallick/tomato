@@ -1,11 +1,14 @@
 class ResturantsController < ApplicationController
 
   before_filter :current_user, only: [:destroy, :create, :new, :edit, :update]
+  before_filter :check_current_user, only: [:create]
+  before_filter(only: [:edit, :show, :update, :destroy]) { find_resturant params[:id] }
+  before_filter(only: [:update, :destroy]) { is_user_owner @resturant.user_id }
 
   # GET /resturants
   # GET /resturants.json
   def index
-    @resturants = Resturant.all
+    @resturants = Resturant.paginate(:page => params[:page], :per_page => 3)
 
     respond_to do |format|
       format.html # both.html.erb
@@ -16,7 +19,7 @@ class ResturantsController < ApplicationController
   # GET /resturants/1
   # GET /resturants/1.json
   def show
-    @resturant = Resturant.find(params[:id])
+    @rat = @resturant.ratings
 
     respond_to do |format|
       format.html # show.html.erb
@@ -37,14 +40,12 @@ class ResturantsController < ApplicationController
 
   # GET /resturants/1/edit
   def edit
-    @resturant = Resturant.find(params[:id])
+
   end
 
   # POST /resturants
   # POST /resturants.json
   def create
-
-    if current_user
       @resturant = Resturant.new(params[:resturant])
       @resturant.update_attribute(:user_id, current_user.id)
 
@@ -57,17 +58,11 @@ class ResturantsController < ApplicationController
           format.json {render json: @resturant.errors, status: :unprocessable_entity}
         end
       end
-    else
-      render text: "Login kr le"
-    end
   end
 
   # PUT /resturants/1
   # PUT /resturants/1.json
   def update
-    @resturant = Resturant.find(params[:id])
-
-    if current_user.id == @resturant.user_id
       respond_to do |format|
         if @resturant.update_attributes(params[:resturant])
           format.html {redirect_to @resturant, notice: 'Resturant was successfully updated.'}
@@ -77,25 +72,13 @@ class ResturantsController < ApplicationController
           format.json {render json: @resturant.errors, status: :unprocessable_entity}
         end
       end
-    else
-      render text: "You can't edit this Resturant, as you aren't the owner of this Resturant"
-    end
   end
 
   # DELETE /resturants/1
   # DELETE /resturants/1.json
   def destroy
-    if current_user
-      @resturant = Resturant.find(params[:id])
-      if current_user.id == @resturant.user_id
-        @resturant.destroy
-        redirect_to resturants_url
-      else
-        render text: "You aren't the owner of this Resturant!!"
-      end
-    else
-      render text: "login kr le"
-    end
+    @resturant.destroy
+    redirect_to resturants_url
   end
 
 end

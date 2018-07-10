@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180609112740) do
+ActiveRecord::Schema.define(:version => 20180710155104) do
 
   create_table "locations", :force => true do |t|
     t.string   "address"
@@ -44,7 +44,10 @@ ActiveRecord::Schema.define(:version => 20180609112740) do
     t.string   "cuisines"
     t.integer  "user_id"
     t.integer  "price"
+    t.string   "location"
   end
+
+  add_index "resturants", ["user_id"], :name => "index_resturants_on_user_id"
 
   create_table "user_sessions", :force => true do |t|
     t.datetime "created_at", :null => false

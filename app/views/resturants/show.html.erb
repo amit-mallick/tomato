@@ -1,10 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-  .checked {
-    color: orange;
-  }
-</style>
-
 <p id="notice"><%= notice %></p>
 
 <div class="card" style="width: 300px;">
@@ -36,42 +29,8 @@
     <p><%= @resturant.description %></p>
   </div>
 
-  <div>
-    <h1>Located at:</h1>
-    <% @resturant.locations.each do |l| %>
-      <p style="background: yellow">Address: <%= l.address %></p>
-      <p style="background: yellow">Location: <%= l.location %></p>
-    <% end %>
-  </div>
-
-  <div class="card">
-    <h1>Add Location</h1>
-    <%= form_for([@resturant, @resturant.locations.build]) do |fa| %>
-      <div class="field">
-        <%= fa.label :address %> <br/>
-        <%= fa.text_field :address %>
-      </div>
-      <div class="field">
-        <%= fa.label :location %> <br/>
-        <%= fa.select :location, options_for_select([["Select One", ""], "Chennai", "Delhi"]) %>
-      </div>
-
-      <div class="field">
-        <div class="actions">
-          <%= fa.submit %>
-        </div>
-      </div>
-
-    <% end %>
-  </div>
-
-  <!--  <div class="card-divider">-->
-  <!--    <h2>Locations:</h2>-->
-
-  <!--  </div>-->
-
   <h3>Reviews</h3>
-  <% @resturant.ratings.each do |rating| %>
+  <% @rat.each do |rating| %>
     <p>
       <b>Reviewer:</b>
       <%= rating.commenter %>
@@ -103,10 +62,12 @@
       <%= f.label :rating %><br/>
       <%= f.select :rating, options_for_select([["Select One", ""], 1, 2, 3, 4, 5]) %>
     </div>
+
     <div class="field">
       <%= f.label :body %><br/>
       <%= f.text_area :body %>
     </div>
+
     <div class="actions">
       <%= f.submit %>
     </div>

@@ -1,11 +1,6 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-  .checked {
-    color: orange;
-  }
-</style>
-
 <h3>Resturants added by: by: <%= current_user.name %></h3>
+
+<%= will_paginate @resturants %>
 
 <% for resturant in @resturants %>
   <h2>
@@ -37,6 +32,8 @@
 <br>
 
 <h3>Ratings given by: <%= current_user.name %></h3>
+
+<%= will_paginate @ratings %>
 
 <% @ratings.each do |rating| %>
 

@@ -14,6 +14,8 @@ gem 'will_filter'
 gem "authlogic"
 # gem "authlogic" , :git => "git://github.com/odorcicd/authlogic.git", :branch => "rails3"
 gem 'strong_parameters'
+gem 'will_paginate'
+gem 'faker'
 # Gems used only for assets and not required
 # in production environments by default.
 
